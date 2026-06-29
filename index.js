@@ -13,15 +13,15 @@ function salvarClientes(clientes){
 }
 
 function lerClientes(){//ver se o clientes que o front está mandando já existe no sistema
-    if (!fs.existsSync.clientesFile){// fs biblioteca, existtsSync é uma função da biblioteca para ver se o arquivo já existe
+    if (!fs.existsSync(clientesFile)){// fs biblioteca, existtsSync é uma função da biblioteca para ver se o arquivo já existe
         return[];//retorna um array vazio
     }
-    const dados = fs.readFileSync(clientesFile, 'utf-8')//vai ler o arquivo e escrever ele dentro de dados com acentos e etc
+    const data = fs.readFileSync(clientesFile, 'utf-8');//vai ler o arquivo e escrever ele dentro de dados com acentos e etc
     try{
-        return JSON.parse(dados) || [] // a função parse transforma a string em json e o || faz com que se na hora de transformar o dados dar erro, ele retorna um array vazio
+        return JSON.parse(data) || []; // a função parse transforma a string em json e o || faz com que se na hora de transformar o dados dar erro, ele retorna um array vazio
     }
     catch(e){
-        return []// caso der erro ele retorna um arry vazio
+        return [];// caso der erro ele retorna um arry vazio
     }
 }
 
@@ -35,8 +35,14 @@ app.post("/clientes", (req, res) =>{
         return res.status(404).json({erro: "Clientes já cadastrado"})
     }
     const novoCliente = {nome, cpf, cep, rua, cidade, estado, numero};//se o cliente for novo, ele será salvo na cost novoCliente
+    console.log('nnovoCLiente')
+    console.log(novoCliente);
+    console.log('clientes')
+    console.log(clientes);
     clientes.push(novoCliente);// a função push vai salvar todos os dados dentro da const clientes sem excluir os clientes já cadastrados anteriormente, formando uma lista com os clienes antigos mais o novo
     salvarClientes(clientes)//vai salvar clientes dentro da função salvaClientes
+    console.log('clientesSlavo')
+    console.log(clientes)
     return res.status(201).json({mensagem: "cliente cadastrado com sucesso"})
 })
 

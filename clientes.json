@@ -1,9 +1,20 @@
 [
   {
-    "nome": "ezequiel",
-    "cpf": "033.350.799-34",
-    "cep": "83601630",
-    "rua": "avenida ademar de barros",
-    "cidade": "campo largo"
+    "nome": "joao",
+    "cpf": "161516519",
+    "cep": "83601000",
+    "rua": "Rua Centenário",
+    "cidade": "Campo Largo",
+    "estado": "Paraná",
+    "numero": "554411156165"
+  },
+  {
+    "nome": "jair ",
+    "cpf": "654468498",
+    "cep": "83601000",
+    "rua": "Rua Centenário",
+    "cidade": "Campo Largo",
+    "estado": "Paraná",
+    "numero": "85651561"
   }
 ]
