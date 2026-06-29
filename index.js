@@ -46,6 +46,45 @@ app.post("/clientes", (req, res) =>{
     return res.status(201).json({mensagem: "cliente cadastrado com sucesso"})
 })
 
+/*
+==================
+USUARIO ENDPOINTS
+==================
+*/
+
+const usuariosFile = path.join(__dirname, "usuarios.json");
+function salvarUsuarios(usuarios){
+    fs.writeFileSync(usuariosFile, JSON.stringify(usuarios, null, 2),"utf-8")
+}
+
+function lerUsuarios(){//ver se o usuario que o front está mandando já existe no sistema
+    if (!fs.existsSync(usuariosFile)){// fs biblioteca, existtsSync é uma função da biblioteca para ver se o arquivo já existe
+        return[];//retorna um array vazio
+    }
+    const data = fs.readFileSync(usuariosFile, 'utf-8');//vai ler o arquivo e escrever ele dentro de dados com acentos e etc
+    try{
+        return JSON.parse(data) || []; // a função parse transforma a string em json e o || faz com que se na hora de transformar o dados dar erro, ele retorna um array vazio
+    }
+    catch(e){
+        return [];// caso der erro ele retorna um arry vazio
+    }
+}
+
+app.post("/usuarios", (req, res) =>{
+    const { nome, cpf, cep, rua, cidade, estado, numero } = req.body;
+    if (!nome || !cpf || !cep){
+        return res.status(404).json({erro: "dados incompletos"})
+    }
+    const usuarios = lerUsuarios(); //todos os usuarios serão armazenados na constante usuarios
+    if (usuarios.some(c=>c.cpf===cpf)){ //o c funciona como uma variavel de posição, que vai tomar cada posição de linha da const usuarios e verificar se é igual ao cpf que está vindo
+        return res.status(404).json({erro: "usuarios já cadastrado"})
+    }
+    const novoUsuario = {nome, cpf, cep, rua, cidade, estado, numero};//se o usuario for novo, ele será salvo na cost novoUsuario
+    clientes.push(novoUsuario);// a função push vai salvar todos os dados dentro da const usuarios sem excluir os usuarios já cadastrados anteriormente, formando uma lista com os usuarios antigos mais o novo
+    salvarUsuarios(usuarios)//vai salvar clientes dentro da função salvarUsuarios
+    return res.status(201).json({mensagem: "usuario cadastrado com sucesso"})
+})
+
 //http://localhost:3000/saudacao?nome=maria
 app.get("/saudacao", (req, res) => {
     const nome = req.query.nome;
